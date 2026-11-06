@@ -1,0 +1,125 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and broadcast preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 200 },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "favoriteChannels": { "type": "array" },
+        "reminderProgramIds": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "LiveChatMessage": {
+      "title": "LiveChatMessage",
+      "description": "Real-time viewer discussion message during live broadcast playout",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "sender": { "type": "string", "maxLength": 80 },
+        "senderUid": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["viewer", "subscriber", "moderator", "vip", "system"] },
+        "text": { "type": "string", "maxLength": 500, "minLength": 1 },
+        "timestamp": { "type": "string", "maxLength": 50 },
+        "channelId": { "type": "string", "maxLength": 64 },
+        "programId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "sender", "senderUid", "text", "channelId"]
+    },
+    "PollVote": {
+      "title": "PollVote",
+      "description": "Viewer vote record on interactive live playout polls",
+      "type": "object",
+      "properties": {
+        "pollId": { "type": "string", "maxLength": 128 },
+        "optionId": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "votedAt": { "type": "string" }
+      },
+      "required": ["pollId", "optionId", "userId"]
+    },
+    "CustomVODItem": {
+      "title": "CustomVODItem",
+      "description": "User uploaded or curated custom VOD video asset",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200, "minLength": 2 },
+        "description": { "type": "string", "maxLength": 1500 },
+        "category": { "type": "string", "maxLength": 80 },
+        "contentType": { "type": "string", "enum": ["podcast", "sports", "business"] },
+        "streamUrl": { "type": "string", "maxLength": 1000 },
+        "thumbnail": { "type": "string", "maxLength": 500 },
+        "durationMinutes": { "type": "number" },
+        "uploaderUid": { "type": "string", "maxLength": 128 },
+        "uploaderEmail": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "streamUrl", "uploaderUid", "contentType"]
+    },
+    "BroadcastChannel": {
+      "title": "BroadcastChannel",
+      "description": "Digital TV channel configuration, stream line, and active assignment",
+      "type": "object",
+      "properties": {
+        "channelId": { "type": "string", "maxLength": 64 },
+        "channelNumber": { "type": "number" },
+        "channelName": { "type": "string", "maxLength": 120 },
+        "callSign": { "type": "string", "maxLength": 32 },
+        "resolution": { "type": "string", "maxLength": 32 },
+        "assignedVideo": { "type": "object" },
+        "isCustom": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["channelId", "channelNumber", "channelName"]
+    },
+    "ChannelTimeline": {
+      "title": "ChannelTimeline",
+      "description": "Continuous 24/7 channel playout wall-clock timeline anchor",
+      "type": "object",
+      "properties": {
+        "channelId": { "type": "string", "maxLength": 64 },
+        "epochStartTime": { "type": "number" },
+        "durationSeconds": { "type": "number" },
+        "streamUrl": { "type": "string", "maxLength": 1000 },
+        "title": { "type": "string", "maxLength": 200 },
+        "isLive": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["channelId", "epochStartTime", "durationSeconds", "streamUrl"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User account documents containing broadcast preferences and reminders"
+    },
+    "/chat_messages/{messageId}": {
+      "schema": "LiveChatMessage",
+      "description": "Live stream public fan and viewer chat messages"
+    },
+    "/poll_votes/{voteId}": {
+      "schema": "PollVote",
+      "description": "Viewer votes cast in active interactive broadcast polls"
+    },
+    "/custom_vods/{vodId}": {
+      "schema": "CustomVODItem",
+      "description": "Custom VOD video programs uploaded and playable on the network"
+    },
+    "/broadcast_channels/{channelId}": {
+      "schema": "BroadcastChannel",
+      "description": "Network digital television channel and live assignment state"
+    },
+    "/channel_timelines/{channelId}": {
+      "schema": "ChannelTimeline",
+      "description": "Continuous 24/7 channel playout synchronization anchors"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Apex Digital TV Network & Playout Engine",
+  "description": "Production-grade Digital TV Network web application with Linear 24/7 Playout, Hot-Switching Ingest, EPG Guide, VOD Library, and Interactive Contextual Broadcast Sidebar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
